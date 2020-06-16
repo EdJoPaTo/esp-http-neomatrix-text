@@ -7,7 +7,7 @@ But having a seperated MQTT Server running might not be suitable for everyone.
 
 # HTTP Routes
 
-You can GET and SET each of these routes to view the current value or set a new one.
+You can GET and POST each of these routes to view the current value or set a new one.
 
 - `/hue`
 
