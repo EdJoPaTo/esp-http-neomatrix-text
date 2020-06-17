@@ -30,10 +30,14 @@ You can GET and POST each of these routes to view the current value or set a new
 
   Can be either `1` or `0`
 
-  Turns of the matrix. Keep in mind that the matrix is still consuming power due to the resistors.
+  Turns off the matrix.
+  Keep in mind that the matrix is still consuming power due to the resistors.
+  See [power consumption](#power-consumption)
 
   Pin 5 (D1) is set to follow this value.
   This way you can for example make use of relais to completly power down the matrix.
+
+  Or simply unplug the matrix when you do not use it and it will not consume any power that way.
 
 - `/text`
 
@@ -65,3 +69,36 @@ High brightness results in higher power consuption which the ESP can not handle.
 Yes, im sure.
 I accidentially tried.
 Can't recommend the smell.
+
+# Power consumption
+
+The simplest way to power the matrix with 5V is via a USB power supply like the ones from mobile devices/phones.
+As this matrix is meant for text most pixels will not be used and also the brightness does not need to be high.
+While the matrix might consume > 1A with all pixels lit this is not the case for text.
+Using a 1A power supply is definitly enough.
+
+Some measurements
+- ~1.4W while off
+- ~1.5W with the default brightness / text,
+- ~7.9W with white max brightness text "12345" (=5V 1.6A)
+- ~9W with max brightness all led rainbow (not from this program)
+
+# Connect it to your WiFi
+
+When the ESP has no connection to a WiFi it creates a hotspot.
+The default name is `ESP-Matrix` with the default password `ich will text` (german for 'I want text').
+When programming the ESP you can change these values in the first few lines in the program code.
+
+When connecting to the Hotspot an interface will allow you to specify the name and password of your local WiFi.
+
+Once you did you can close the configuration website and the ESP will connect your WiFi.
+It is then available with the hostname `ESP-Matrix`.
+
+For more information about this process see [the documentation of the WiFiManager Library](https://github.com/tzapu/WiFiManager/tree/development#how-it-works)
+
+As a little indicator the onboard LED will show the current connection status.
+After powering on the ESP the LED will also turn on.
+It will turn off when the ESP has successfully connected to WiFi and is ready to receive HTTP Requests.
+
+Sometimes the ESP does not connect to your WiFi (onboard LED stays on) and opens its configuration portal.
+Simply reset the ESP (RST button) to retry.
