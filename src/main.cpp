@@ -1,6 +1,6 @@
 #include <Adafruit_NeoMatrix.h>
-#include <WiFiManager.h>
 #include <ESP8266WebServer.h>
+#include <WiFiManager.h>
 
 WiFiManager wifiManager;
 #define HOSTNAME "ESP-Matrix"
@@ -50,6 +50,9 @@ bool isTextLongerThanMatrix() {
   return textPixelWidth() > matrix.width();
 }
 
+// Defined below
+uint16_t ColorHSV(uint16_t hue, uint8_t sat, uint8_t val);
+
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(PIN_ON, OUTPUT);
@@ -68,7 +71,7 @@ void setup() {
 
   http_server.on("/", HTTP_GET, []() {
     Serial.println("Respond to /");
-    http_server.send(200, "text/html", "Welcome to the http accessible Neopixel Matrix!\nCheck out the repo: https://github.com/EdJoPaTo/esp-http-neomatrix-text/");
+    http_server.send(200, "text/html", "Welcome to the http accessible Neopixel Matrix!\nCheck out the repo: https://github.com/EdJoPaTo/esp-http-neomatrix-text/\nVersion: " GIT_VERSION);
   });
 
   http_server.on("/hue", HTTP_GET, []() {
