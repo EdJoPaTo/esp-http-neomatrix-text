@@ -1,4 +1,5 @@
 #include <ESP8266WebServer.h>
+#include <EspSimpleRemoteUpdate.h>
 #include <FastLED_NeoMatrix.h>
 #include <FastLED.h>
 #include <WiFiManager.h>
@@ -6,6 +7,8 @@
 WiFiManager wifiManager;
 #define HOSTNAME "ESP-Matrix"
 #define HOTSPOT_PASSWORD "ich will text"
+
+EspSimpleRemoteUpdate updater;
 
 const int HTTP_SERVER_PORT = 80;
 ESP8266WebServer http_server(HTTP_SERVER_PORT);
@@ -61,6 +64,9 @@ void setup() {
   matrix.setTextWrap(false);
   matrix.print(text);
   matrix.show();
+
+  updater.enableOTA(NULL);
+  // updater.enableHTTPWebUpdater(); // Would also run on Port 80 → https://github.com/plapointe6/EspSimpleRemoteUpdate/issues/1
 
   wifiManager.setHostname(HOSTNAME);
   wifiManager.autoConnect(HOSTNAME, HOTSPOT_PASSWORD);
