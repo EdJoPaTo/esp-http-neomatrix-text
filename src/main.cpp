@@ -4,6 +4,8 @@
 #include <FastLED.h>
 #include <WiFiManager.h>
 
+#include "static-content.h"
+
 WiFiManager wifiManager;
 #define HOSTNAME "ESP-Matrix"
 #define HOTSPOT_PASSWORD "ich will text"
@@ -50,6 +52,46 @@ bool isTextLongerThanMatrix() {
   return textPixelWidth() > matrix.width();
 }
 
+const char INDEX_HTML[] = R"rawliteral(<!DOCTYPE HTML><html><head>
+  <meta charset="utf-8">
+  <title>ESP Text Matrix</title>
+  <link rel="stylesheet" href="/main.css">
+  <script src="/script.js"></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ESP Text Matrix">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head><body>
+<header>
+  <h1>Welcome to the HTTP accessible Neopixel Text Matrix!</h1>
+</header>
+
+<main>
+  <label for="on">On</label>:
+  <input id="on" type="checkbox" onchange="set('/on', this.checked ? 1 : 0)" />
+  <br />
+  <label for="hue">Hue</label> <code id="huetext"></code>°<br />
+  <input id="hue" type="range" min="0" max="360" value="120" onchange="set('/hue', this.value)" />
+  <br />
+  <label for="sat">Saturation</label> <code id="sattext"></code>%<br />
+  <input id="sat" type="range" min="0" max="100" value="100" onchange="set('/sat', this.value)" />
+  <br />
+  <label for="bri">Brightness</label> <code id="britext"></code> /255<br />
+  <input id="bri" type="range" min="1" max="255" value="5" onchange="set('/bri', this.value)" />
+  <br />
+  <label for="text">Text</label> <code id="texttext"></code><br />
+  <input id="text" type="text" value="hey!" onchange="set('/text', this.value)" />
+  <br />
+</main>
+
+<footer>
+  <span>Created by <a href="https://edjopato.de/">EdJoPaTo</a></span>
+  <span>Version:&nbsp;<a href="https://github.com/EdJoPaTo/esp-http-neomatrix-text/releases">)rawliteral" GIT_VERSION R"rawliteral(</a></span>
+  <span><a href="https://github.com/EdJoPaTo/esp-http-neomatrix-text#readme">API&nbsp;description</a></span>
+</footer></body></html>)rawliteral";
+
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(PIN_ON, OUTPUT);
@@ -73,7 +115,14 @@ void setup() {
 
   http_server.on("/", HTTP_GET, []() {
     Serial.println("Respond to /");
-    http_server.send(200, "text/html", "Welcome to the http accessible Neopixel Matrix!\nCheck out the repo: https://github.com/EdJoPaTo/esp-http-neomatrix-text/\nVersion: " GIT_VERSION);
+    http_server.send(200, "text/html", INDEX_HTML);
+  });
+
+  http_server.on("/main.css", HTTP_GET, []() {
+    http_server.send(200, "text/css", __main_css, __main_css_len);
+  });
+  http_server.on("/script.js", HTTP_GET, []() {
+    http_server.send(200, "application/javascript", __script_js, __script_js_len);
   });
 
   http_server.on("/hue", HTTP_GET, []() {
@@ -94,6 +143,14 @@ void setup() {
 
   http_server.on("/text", HTTP_GET, []() {
     http_server.send(200, "text/plain", text);
+  });
+
+  http_server.on("/json", HTTP_GET, []() {
+    const size_t BUFFER_SIZE = 100;
+    auto is_on = on ? "true" : "false";
+    char buffer[BUFFER_SIZE];
+    snprintf(buffer, BUFFER_SIZE, R"==({"hue": %i, "sat": %i, "bri": %i, "on": %s, "text": "%s"})==", hue, sat, bri, is_on, text);
+    http_server.send(200, "application/json", buffer);
   });
 
   http_server.on("/hue", HTTP_POST, []() {
@@ -151,15 +208,21 @@ void loop() {
   matrix.setCursor(x, 0);
   matrix.print(text);
 
-  if (isTextLongerThanMatrix()) {
-    x -= 1;
-    if (x < -textPixelWidth()) {
-      x = matrix.width();
-    }
-  } else {
-    x = 0;
-  }
+  auto now = millis();
 
-  matrix.show();
-  delay(50);
+  static unsigned long nextUpdate = 0;
+  if (now >= nextUpdate) {
+    nextUpdate = now + 50;
+
+    if (isTextLongerThanMatrix()) {
+      x -= 1;
+      if (x < -textPixelWidth()) {
+        x = matrix.width();
+      }
+    } else {
+      x = 0;
+    }
+
+    matrix.show();
+  }
 }
