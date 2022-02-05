@@ -39,18 +39,12 @@ uint16_t hue = 120; // green
 uint8_t sat = 100;
 uint8_t bri = 10;
 boolean on = true;
-int x = 0;
 
 uint8_t hue8 = hue / 360.0 * 256.0;
 uint8_t sat8 = sat / 100.0 * 255.0;
-
-int textPixelWidth() {
-  return text.length() * 6;
-}
-
-bool isTextLongerThanMatrix() {
-  return textPixelWidth() > matrix.width();
-}
+int x = 0;
+int textPixelWidth = text.length() * 6;
+boolean textIsLongerThanMatrix = textPixelWidth > WIDTH;
 
 const char INDEX_HTML[] = R"rawliteral(<!DOCTYPE HTML><html><head>
   <meta charset="utf-8">
@@ -100,6 +94,7 @@ void setup() {
   FastLED.addLeds<NEOPIXEL, PIN_MATRIX>(leds, WIDTH * HEIGHT);
   matrix.begin();
   matrix.setBrightness(bri * on);
+  matrix.fillScreen(0);
   matrix.setCursor(0, 0);
   auto color = CRGB(CHSV(hue8, sat8, 255));
   matrix.setTextColor(matrix.Color(color.red, color.green, color.blue));
@@ -190,7 +185,9 @@ void setup() {
 
   http_server.on("/text", HTTP_POST, []() {
     text = http_server.arg("plain");
-    x = isTextLongerThanMatrix() ? matrix.width() : 0;
+    textPixelWidth = text.length() * 6;
+    textIsLongerThanMatrix = textPixelWidth > WIDTH;
+    x = textIsLongerThanMatrix ? WIDTH : 0;
     http_server.send(200, "text/plain", text);
   });
 
@@ -214,13 +211,11 @@ void loop() {
   if (now >= nextUpdate) {
     nextUpdate = now + 50;
 
-    if (isTextLongerThanMatrix()) {
+    if (textIsLongerThanMatrix) {
       x -= 1;
-      if (x < -textPixelWidth()) {
+      if (x < -textPixelWidth) {
         x = matrix.width();
       }
-    } else {
-      x = 0;
     }
 
     matrix.show();
