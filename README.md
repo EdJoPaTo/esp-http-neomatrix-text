@@ -2,8 +2,12 @@
 
 Control a Neopixel Matrix over HTTP.
 
+![Photo of Matrix](media/matrix.webp)
+
 This is basically an adapted version of the [Text Neopixel Matrix controllable via MQTT](https://github.com/EdJoPaTo/esp-mqtt-neomatrix-text) I am using for myself.
 But having a dedicated MQTT Server running might not be suitable for everyone.
+
+![Screenshot](media/screenshot.webp)
 
 ## HTTP Routes
 
