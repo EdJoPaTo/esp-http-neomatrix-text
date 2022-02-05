@@ -26,8 +26,9 @@ main {
 	flex: 1;
 }
 input[type=range], input[type=text] {
-	width: 90vw;
+	font-size: inherit;
 	max-width: 800px;
+	width: 90vw;
 }
 
 footer {
