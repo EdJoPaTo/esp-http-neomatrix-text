@@ -1,4 +1,5 @@
-console.log('i was here');
+setInterval(updateStyle, 2500);
+updateStyle();
 
 async function updateStyle() {
     const response = await fetch('/json');
@@ -6,8 +7,7 @@ async function updateStyle() {
     console.log(data);
     const {hue, sat, bri, on, text} = data;
 
-    document.documentElement.style.setProperty('--hue', hue);
-    document.documentElement.style.setProperty('--sat', `${sat}%`);
+    updateBackground(hue, sat, on ? bri : 0);
 
     document.getElementById('on').checked = on;
     updateElementValueById('hue', hue);
@@ -21,8 +21,10 @@ async function updateStyle() {
     document.getElementById("texttext").innerText = text;
 }
 
-setInterval(updateStyle, 2500);
-updateStyle();
+function updateBackground(hue, sat, bri) {
+    const [h, s, l] = hsv2hsl(hue, sat / 100, (bri / 255) ** 0.3);
+    document.documentElement.style.setProperty('--background', `hsl(${hue}, ${s * 100}%, ${l * 100}%)`);
+}
 
 function updateElementValueById(id, newValue) {
     const element = document.getElementById(id);
@@ -42,3 +44,6 @@ async function set(method, value) {
     await doPost(method, value);
     await updateStyle();
 }
+
+// https://stackoverflow.com/questions/3423214/convert-hsb-hsv-color-to-hsl
+const hsv2hsl = (h,s,v,l=v-v*s/2, m=Math.min(l,1-l)) => [h,m?(v-l)/m:0,l];
