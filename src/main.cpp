@@ -207,17 +207,19 @@ void loop() {
 
   auto now = millis();
 
+  static unsigned long nextMove = 0;
+  if (textIsLongerThanMatrix && now >= nextMove) {
+    nextMove = now + 40;
+
+    x -= 1;
+    if (x < -textPixelWidth) {
+      x = matrix.width();
+    }
+  }
+
   static unsigned long nextUpdate = 0;
   if (now >= nextUpdate) {
-    nextUpdate = now + 50;
-
-    if (textIsLongerThanMatrix) {
-      x -= 1;
-      if (x < -textPixelWidth) {
-        x = matrix.width();
-      }
-    }
-
+    nextUpdate = now + 20;
     matrix.show();
   }
 }
