@@ -1,7 +1,8 @@
 console.log('i was here');
 
 async function updateStyle() {
-    const data = await (await fetch('/json')).json();
+    const response = await fetch('/json');
+    const data = await response.json();
     console.log(data);
     const {hue, sat, bri, on, text} = data;
 

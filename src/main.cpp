@@ -141,10 +141,15 @@ void setup() {
   });
 
   http_server.on("/json", HTTP_GET, []() {
-    const size_t BUFFER_SIZE = 100;
+    const size_t BUFFER_SIZE = 200;
     auto is_on = on ? "true" : "false";
     char buffer[BUFFER_SIZE];
-    snprintf(buffer, BUFFER_SIZE, R"==({"hue": %i, "sat": %i, "bri": %i, "on": %s, "text": "%s"})==", hue, sat, bri, is_on, text);
+    auto length = snprintf(buffer, BUFFER_SIZE, R"==({"hue":%i,"sat":%i,"bri":%i,"on":%s,"text":"%s"})==", hue, sat, bri, is_on, text.c_str());
+    if (length >= BUFFER_SIZE) {
+      buffer[BUFFER_SIZE-1] = 0;
+      buffer[BUFFER_SIZE-2] = '}';
+      buffer[BUFFER_SIZE-3] = '"';
+    }
     http_server.send(200, "application/json", buffer);
   });
 
