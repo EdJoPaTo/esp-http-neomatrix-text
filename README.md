@@ -57,7 +57,7 @@ Otherwise, your ESP might smell badly and is useless afterwards.
 
 I tested this with an ESP8266 / NodeMCU.
 
-- Get the [esptool](https://github.com/espressif/esptool/releases)
+- Get the [esptool](https://github.com/espressif/esptool) (It might also be in your package manager)
 - Download the `firmware.bin` from the [Releases](https://github.com/EdJoPaTo/esp-http-neomatrix-text/releases)
 - Connect the ESP8266 / NodeMCU via USB to your computer.
   Make sure to either disconnect the matrix or power it from an external source while connecting via USB!
