@@ -3,7 +3,7 @@ name: PlatformIO
 on:
   push:
   pull_request:
-  # Build regularly in order to check for new dependency versions
+  # Build regularly in order to check with new dependency versions
   schedule:
     - cron: '42 2 * * 6' # weekly on Saturday 2:42 UTC
 
