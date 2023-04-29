@@ -38,13 +38,13 @@ String text = "hey!";
 uint16_t hue = 120; // green
 uint8_t sat = 100;
 uint8_t bri = 10;
-boolean on = true;
+bool on = true;
 
 uint8_t hue8 = hue / 360.0 * 256.0;
 uint8_t sat8 = sat / 100.0 * 255.0;
 int x = 0;
 int textPixelWidth = text.length() * 6;
-boolean textIsLongerThanMatrix = textPixelWidth > WIDTH;
+bool textIsLongerThanMatrix = textPixelWidth > WIDTH;
 
 const char INDEX_HTML[] = R"rawliteral(<!DOCTYPE HTML><html><head>
   <meta charset="utf-8">
