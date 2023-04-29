@@ -155,8 +155,8 @@ void setup() {
 
   http_server.on("/hue", HTTP_POST, []() {
     String payload = http_server.arg("plain");
-    int parsed = strtol(payload.c_str(), 0, 10);
-    hue = parsed % 360;
+    auto parsed = strtol(payload.c_str(), 0, 10);
+    hue = parsed % 360l;
     hue8 = hue / 360.0 * 256.0;
     auto color = CRGB(CHSV(hue8, sat8, 255));
     matrix.setTextColor(matrix.Color(color.red, color.green, color.blue));
@@ -165,8 +165,8 @@ void setup() {
 
   http_server.on("/sat", HTTP_POST, []() {
     String payload = http_server.arg("plain");
-    int parsed = strtol(payload.c_str(), 0, 10);
-    sat = max(0, min(100, parsed));
+    auto parsed = strtol(payload.c_str(), 0, 10);
+    sat = max(0l, min(100l, parsed));
     sat8 = sat / 100.0 * 255.0;
     auto color = CRGB(CHSV(hue8, sat8, 255));
     matrix.setTextColor(matrix.Color(color.red, color.green, color.blue));
@@ -175,8 +175,8 @@ void setup() {
 
   http_server.on("/bri", HTTP_POST, []() {
     String payload = http_server.arg("plain");
-    int parsed = strtol(payload.c_str(), 0, 10);
-    bri = max(0, min(255, parsed));
+    auto parsed = strtol(payload.c_str(), 0, 10);
+    bri = max(0l, min(255l, parsed));
     matrix.setBrightness(bri * on);
     http_server.send(200, "text/plain", String(bri));
   });
