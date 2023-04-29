@@ -183,7 +183,7 @@ void setup() {
 
   http_server.on("/on", HTTP_POST, []() {
     String payload = http_server.arg("plain");
-    on = payload != "0";
+    on = payload == "1" || payload == "true";
     matrix.setBrightness(bri * on);
     http_server.send(200, "text/plain", String(on));
   });
