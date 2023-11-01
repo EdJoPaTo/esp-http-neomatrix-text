@@ -104,15 +104,15 @@ Some measurements
 ## Connect it to your Wi-Fi
 
 When the ESP has no connection to a Wi-Fi it creates a hotspot.
-The default name is `ESP-Matrix` with the default password `ich will text` (German for 'I want text').
-When programming the ESP you can change these values in the first few lines in the program code.
+The default name is `esp-matrix` with the default password `12345678`.
+When programming the ESP you can change these values in <platformio.ini>.
 
 When connecting to the Hotspot an interface will allow you to specify the name and password of your local Wi-Fi.
 
 Once you did, you can close the configuration website and the ESP will connect your Wi-Fi.
-It is then available with the hostname `ESP-Matrix`.
+It is then available with the hostname <http://esp-matrix/>.
 
-For more information about this process see [the documentation of the `WiFiManager` Library](https://github.com/tzapu/WiFiManager/tree/development#how-it-works)
+For more information about this process see [the documentation of the `AutoConnect` Library](https://hieromon.github.io/AutoConnect/)
 
 As a little indicator the onboard LED will show the current connection status.
 After powering on the ESP the LED will also turn on.

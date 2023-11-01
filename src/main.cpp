@@ -1,18 +1,12 @@
+#include <AutoConnect.h>
 #include <ESP8266WebServer.h>
-#include <EspSimpleRemoteUpdate.h>
 #include <FastLED_NeoMatrix.h>
 #include <FastLED.h>
-#include <WiFiManager.h>
 
 #include "static-content.h"
 
-WiFiManager wifiManager;
-#define HOSTNAME "ESP-Matrix"
-#define HOTSPOT_PASSWORD "ich will text"
-
-EspSimpleRemoteUpdate updater;
-
 ESP8266WebServer http_server;
+AutoConnect auto_connect(http_server);
 
 const uint16_t WIDTH = 32;
 const uint16_t HEIGHT = 8;
@@ -102,11 +96,13 @@ void setup()
 	matrix.print(text);
 	matrix.show();
 
-	updater.enableOTA(NULL);
-	// updater.enableHTTPWebUpdater(); // Would also run on Port 80 → https://github.com/plapointe6/EspSimpleRemoteUpdate/issues/1
-
-	wifiManager.setHostname(HOSTNAME);
-	wifiManager.autoConnect(HOSTNAME, HOTSPOT_PASSWORD);
+	static AutoConnectConfig ac_config;
+	ac_config.apid = HOSTNAME;
+	ac_config.hostName = HOSTNAME;
+	ac_config.ota = AC_OTA_BUILTIN;
+	ac_config.otaExtraCaption = GIT_REMOTE " " GIT_VERSION;
+	auto_connect.config(ac_config);
+	auto_connect.begin();
 
 	http_server.on("/", HTTP_GET, []() {
 		Serial.println("Respond to /");
@@ -204,7 +200,7 @@ void setup()
 
 void loop()
 {
-	http_server.handleClient();
+	auto_connect.handleClient();
 	digitalWrite(PIN_ON, on ? HIGH : LOW);
 
 	matrix.fillScreen(0);
