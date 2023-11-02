@@ -12,8 +12,7 @@ WiFiManager wifiManager;
 
 EspSimpleRemoteUpdate updater;
 
-const int HTTP_SERVER_PORT = 80;
-ESP8266WebServer http_server(HTTP_SERVER_PORT);
+ESP8266WebServer http_server;
 
 const uint16_t WIDTH = 32;
 const uint16_t HEIGHT = 8;
