@@ -36,7 +36,7 @@ You can GET and POST each of these routes to view the current value or set a new
 
   Turns off the matrix.
   Keep in mind that the matrix is still consuming power due to the resistors.
-  See [power consumption](#power-consumption)
+  See [power consumption](#power-consumption).
 
   Pin 5 (D1) is set to follow this value.
   This way you can for example make use of relays to completely power down the matrix.
@@ -107,7 +107,7 @@ When the ESP has no connection to a Wi-Fi it creates a hotspot.
 The default name is `ESP-Matrix` with the default password `ich will text` (German for 'I want text').
 When programming the ESP you can change these values in the first few lines in the program code.
 
-When connecting to the Hotspot an interface will allow you to specify the name and password of your local Wi-Fi.
+When connecting to the Hotspot an interface allows you to specify the name and password of your local Wi-Fi.
 
 Once you did, you can close the configuration website and the ESP will connect your Wi-Fi.
 It is then available with the hostname `ESP-Matrix`.
