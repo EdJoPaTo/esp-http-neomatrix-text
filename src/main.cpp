@@ -33,7 +33,7 @@ FastLED_NeoMatrix matrix = FastLED_NeoMatrix(leds, WIDTH, HEIGHT,
 	NEO_MATRIX_BOTTOM  + NEO_MATRIX_RIGHT +
 	NEO_MATRIX_COLUMNS + NEO_MATRIX_ZIGZAG);
 
-String text = "hey!";
+String text = "Moin!";
 uint16_t hue = 120; // green
 uint8_t sat = 100;
 uint8_t bri = 10;
