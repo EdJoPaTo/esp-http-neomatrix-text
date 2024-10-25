@@ -18,7 +18,7 @@ a {
 body {
 	display: flex;
 	flex-direction: column;
-	min-height: 100vh;
+	min-height: 100dvh;
 }
 
 header {
@@ -32,7 +32,7 @@ main {
 input[type=range], input[type=text] {
 	font-size: inherit;
 	max-width: 800px;
-	width: 90vw;
+	width: 90dvw;
 }
 
 footer {
