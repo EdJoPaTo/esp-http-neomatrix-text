@@ -6,6 +6,8 @@ html, body {
 	color: whitesmoke;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 	font-size: 1.2rem;
+	margin: 0;
+	padding: 0;
 	text-align: center;
 	text-shadow: 1px 1px 10px #000;
 }
@@ -17,6 +19,11 @@ body {
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
+}
+
+header {
+	margin: 1.5rem 1rem;
+	padding: 0;
 }
 
 main {
