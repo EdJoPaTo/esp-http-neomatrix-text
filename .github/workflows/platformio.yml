@@ -3,9 +3,10 @@ name: PlatformIO
 on:
   push:
   pull_request:
+  workflow_dispatch:
   # Build regularly in order to check with new dependency versions
   schedule:
-    - cron: '42 2 * * 6' # weekly on Saturday 2:42 UTC
+    - cron: "42 2 * * 6" # weekly on Saturday 2:42 UTC
 
 permissions:
   contents: write
@@ -14,7 +15,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -39,4 +40,4 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           files: |
-             *.zip
+            *.zip
